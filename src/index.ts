@@ -3,4 +3,6 @@ import SlotMachine from "./services/slotMachine";
 
 const slotMachine = new SlotMachine(SlotMachineConfig);
 
-slotMachine.spin();
+// slotMachine.spin();
+
+slotMachine.testSpin();

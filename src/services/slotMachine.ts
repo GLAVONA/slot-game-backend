@@ -34,8 +34,29 @@ export default class SlotMachine {
     formattedResult.forEach((row) => {
       console.log(row);
     });
-
     const payout = new Payout(result.formattedReelsResult);
-    payout.checkRowWinners();
+    payout.checkWinners();
+  }
+
+  testSpin() {
+    const testArray = [
+      [5, 2, 7, 4, 1],
+      [3, 7, 6, 1, 6],
+      [3, 3, 3, 6, 4],
+    ];
+    console.log("Formatted results:");
+    testArray.forEach((row) => {
+      console.log(row);
+    });
+    const payout = new Payout(testArray);
+    payout.checkWinners();
   }
 }
+
+// lines: [
+//   [0, 0, 0, 0, 0],
+//   [1, 1, 1, 1, 1],
+//   [2, 2, 2, 2, 2],
+//   [0, 1, 0, 1, 0],
+//   [1, 2, 1, 2, 1],
+// ],

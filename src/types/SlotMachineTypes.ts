@@ -16,13 +16,7 @@ export interface WinningStreaksType {
   symbol: number;
   streak: number;
   winning: number;
-}
-
-export interface RowWinningStreakType extends WinningStreaksType {
   rowIndex: number;
-  startRowIndex: number;
   startingAtIndex: number;
   endingAtIndex: number;
 }
-
-export interface ZigzagStreakType extends WinningStreaksType {}
