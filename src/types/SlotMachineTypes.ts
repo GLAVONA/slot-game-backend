@@ -5,3 +5,10 @@ export interface SlotMachineConfigType {
   lines: number[][];
   reels: number[][];
 }
+
+export interface RawResultType {
+  position: number;
+  symbol: number;
+}
+
+export interface FormattedResultType {}
