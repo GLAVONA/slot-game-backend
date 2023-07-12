@@ -11,11 +11,18 @@ export interface RawResultType {
   symbol: number;
 }
 
-export interface winningStreaksType {
+export interface WinningStreaksType {
+  type: "row" | "zigzag";
   symbol: number;
   streak: number;
   winning: number;
+}
+
+export interface RowWinningStreakType extends WinningStreaksType {
   rowIndex: number;
+  startRowIndex: number;
   startingAtIndex: number;
   endingAtIndex: number;
 }
+
+export interface ZigzagStreakType extends WinningStreaksType {}

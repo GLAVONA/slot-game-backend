@@ -1,4 +1,7 @@
-import { winningStreaksType } from "@/types/SlotMachineTypes";
+import {
+  WinningStreaksType,
+  RowWinningStreakType,
+} from "@/types/SlotMachineTypes";
 import SlotMachineConfig from "../config";
 
 export default class Payout {
@@ -6,7 +9,7 @@ export default class Payout {
   reelResult;
   lines = SlotMachineConfig.lines;
   symbols = SlotMachineConfig.symbols;
-  winningStreaks: winningStreaksType[] = [];
+  winningStreaks: WinningStreaksType[] = [];
 
   constructor(reelResult: number[][]) {
     this.reelResult = reelResult;
@@ -18,13 +21,15 @@ export default class Payout {
       let streakSymbol = this.reelResult[i][0];
       let winner = false;
       let streak = 1;
-      let rowWinner: winningStreaksType = {
+      let rowWinner: RowWinningStreakType = {
+        type: "row",
         streak: 0,
         symbol: 0,
         winning: 0,
+        endingAtIndex: 0,
         rowIndex: 0,
         startingAtIndex: 0,
-        endingAtIndex: 0,
+        startRowIndex: 0,
       };
       for (let y = 1; y < this.reelResult[i].length; y++) {
         const currentSymbol = this.reelResult[i][y];
