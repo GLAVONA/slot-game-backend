@@ -1,4 +1,6 @@
-export default {
+import { SlotMachineConfigType } from "@/types/SlotMachineConfigType";
+
+const SlotMachineConfig: SlotMachineConfigType = {
   reelsCount: 5,
   rowsCount: 3,
 
@@ -66,3 +68,5 @@ export default {
     ],
   ],
 };
+
+export default SlotMachineConfig;
