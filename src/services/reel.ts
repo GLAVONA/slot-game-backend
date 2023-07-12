@@ -11,16 +11,6 @@ export default class Reel {
     this.reel = reel;
   }
 
-  /* Get a random starting index for a reel,
-     depending on the length of the reel array */
-  private randomizeStartingIndex(): void {
-    const randomIndex = () => {
-      const index = Math.floor(Math.random() * this.reel.length);
-      return index;
-    };
-    this.startingIndex = randomIndex();
-  }
-
   // Get the symbols and their indexes in play for the specific reel
   get symbolsInPlay() {
     this.randomizeStartingIndex();
@@ -34,5 +24,15 @@ export default class Reel {
       });
     }
     return this._symbolsInPlay;
+  }
+
+  /* Randomize the starting index for a reel,
+     depending on the length of the reel array */
+  private randomizeStartingIndex(): void {
+    const randomIndex = () => {
+      const index = Math.floor(Math.random() * this.reel.length);
+      return index;
+    };
+    this.startingIndex = randomIndex();
   }
 }

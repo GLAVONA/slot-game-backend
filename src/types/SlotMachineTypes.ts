@@ -11,4 +11,11 @@ export interface RawResultType {
   symbol: number;
 }
 
-export interface FormattedResultType {}
+export interface winningStreaksType {
+  symbol: number;
+  streak: number;
+  winning: number;
+  rowIndex: number;
+  startingAtIndex: number;
+  endingAtIndex: number;
+}
