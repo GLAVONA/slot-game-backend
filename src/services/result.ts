@@ -1,19 +1,23 @@
 import { RawResultType } from "@/types/SlotMachineTypes";
 
 export default class Result {
-  rawResult;
-  formattedResult: number[][] = [];
+  rawReelsResult;
+  _formattedReelResult: number[][] = [];
 
   constructor(rawResult: RawResultType[][]) {
-    this.rawResult = rawResult;
+    this.rawReelsResult = rawResult;
   }
 
   // Transpose the result array to the number of rows
-  formatResult() {
-    const output = this.rawResult[0].map((_, colIndex) =>
-      this.rawResult.map((row) => row[colIndex].symbol)
+  private formatResult() {
+    const formattedResult = this.rawReelsResult[0].map((_, colIndex) =>
+      this.rawReelsResult.map((row) => row[colIndex].symbol)
     );
-    this.formattedResult = output;
-    return this.formattedResult;
+    this._formattedReelResult = formattedResult;
+  }
+
+  get formattedResult(): number[][] {
+    this.formatResult();
+    return this._formattedReelResult;
   }
 }

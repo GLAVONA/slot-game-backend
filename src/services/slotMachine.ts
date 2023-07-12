@@ -18,7 +18,7 @@ export default class SlotMachine {
     // For each reel get the symbols in play and return
     for (let i = 0; i < this.slotMachine.reels.length; i++) {
       const currentReel = new Reel(this.slotMachine.reels[i]);
-      rawResult.push(currentReel.getSymbolsInPlay());
+      rawResult.push(currentReel.symbolsInPlay);
     }
     console.log("Reel position and symbols:");
     for (let i = 0; i < rawResult.length; i++) {
@@ -26,7 +26,8 @@ export default class SlotMachine {
       console.log(reelResult);
     }
     console.log("Formatted results:");
-    const formattedResult = new Result(rawResult).formatResult();
+    const result = new Result(rawResult);
+    const formattedResult = result.formattedResult;
     formattedResult.forEach((row) => {
       console.log(row);
     });
