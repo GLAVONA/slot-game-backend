@@ -1,10 +1,11 @@
 import {
-  SlotMachineConfigType,
   RawResultType,
+  SlotMachineConfigType,
 } from "../types/SlotMachineTypes";
-import Payout from "./payout";
+// import Payout from "./payout";
 import Reel from "./reel";
-import ReelsResult from "./reelsResult";
+import { calculateSpinPayout, formatReelsResult } from "../lib/utils";
+import { evaluateWinners } from "./evaluateWinners";
 
 export default class SlotMachine {
   private slotMachine: SlotMachineConfigType;
@@ -29,16 +30,15 @@ export default class SlotMachine {
     }
 
     console.log("Formatted results:");
-    const result = new ReelsResult(rawResult);
-    const formattedResult = result.formattedReelsResult;
+    const formattedResult = formatReelsResult(rawResult);
     formattedResult.forEach((row) => {
       console.log(row);
     });
+    const payouts = evaluateWinners(formattedResult);
+    const totalPayout = calculateSpinPayout(payouts);
 
-    const payout = new Payout(result.formattedReelsResult);
-    payout.evaluateWinners();
-    if (payout.payout > 0) {
-      console.log("Payout this spin:", payout.payout);
+    if (totalPayout > 0) {
+      console.log("Payout this spin:", totalPayout);
     } else {
       console.log("No winners, GL next spin!");
     }
@@ -50,12 +50,14 @@ export default class SlotMachine {
       [1, 9, 9, 9, 9],
       [1, 1, 1, 1, 4],
     ];
+
     console.log("Formatted results:");
+
     testArray.forEach((row) => {
       console.log(row);
     });
-    const payout = new Payout(testArray);
-    payout.evaluateWinners();
-    console.log("Payout this spin:", payout.payout);
+    const payouts = evaluateWinners(testArray);
+    const totalPayout = calculateSpinPayout(payouts);
+    console.log("Payout this spin:", totalPayout);
   }
 }
