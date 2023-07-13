@@ -2,7 +2,7 @@ import { PayoutType } from "@/types/SlotMachineTypes";
 import SlotMachineConfig from "../config";
 
 export default class Payout {
-  _payout = 0;
+  private _payout = 0;
   reelResult;
   lines = SlotMachineConfig.lines;
   symbols = SlotMachineConfig.symbols;
@@ -12,13 +12,31 @@ export default class Payout {
     this.reelResult = reelResult;
   }
 
+  private calculatePayout(payouts: PayoutType[]): void {
+    if (this.payouts.length > 0) {
+      console.log("Winners: ");
+      this.payouts.forEach((payout) => {
+        this._payout += payout.winAmount;
+        console.log(JSON.stringify(payout));
+        console.log("-----");
+      });
+    } else {
+      console.log("No winners, GL next spin!");
+    }
+  }
+
+  get payout(): number {
+    this.calculatePayout(this.payouts);
+    return this._payout;
+  }
+
   // Evaluate winners
   evaluateWinners(): void {
     // Loop through lines
     for (let lineIndex = 0; lineIndex < this.lines.length; lineIndex++) {
-      let currentSymbol = undefined;
-      let currentSymbolIndex = 0;
       const currentLine = this.lines[lineIndex];
+      let currentSymbol = this.reelResult[currentLine[0]][0];
+      let currentSymbolIndex = 0;
       let streak = 1;
       let payout: PayoutType = {
         streak: 0,
@@ -27,23 +45,28 @@ export default class Payout {
         line: [],
         symbolCoordinates: [],
       };
-      const currentSymbolCoordinates = [];
       let winner = false;
+
+      // Loop through each symbol and compare it to the previous symbol in the array
       for (
-        let symbolIndex = 0;
-        symbolIndex < currentLine.length;
-        symbolIndex++
+        let nextSymbolIndex = 1;
+        nextSymbolIndex < currentLine.length;
+        nextSymbolIndex++
       ) {
-        let symbolAtIndex =
-          this.reelResult[currentLine[symbolIndex]][symbolIndex];
-
-        currentSymbolCoordinates.push({
-          row: currentLine[symbolIndex],
-          index: symbolIndex,
-        });
-
-        if (currentSymbol === symbolAtIndex) {
+        let nextSymbol =
+          this.reelResult[currentLine[nextSymbolIndex]][nextSymbolIndex];
+        if (currentSymbol === nextSymbol) {
           streak++;
+          if (nextSymbolIndex - 1 === currentSymbolIndex) {
+            payout.symbolCoordinates.push({
+              row: currentLine[nextSymbolIndex - 1],
+              index: nextSymbolIndex - 1,
+            });
+          }
+          payout.symbolCoordinates.push({
+            row: currentLine[nextSymbolIndex],
+            index: nextSymbolIndex,
+          });
 
           if (streak > 2) {
             payout.streak = streak;
@@ -53,24 +76,18 @@ export default class Payout {
             winner = true;
           }
         } else {
+          if (winner) break;
+          payout.symbolCoordinates = [];
+          currentSymbol = nextSymbol;
+          currentSymbolIndex = nextSymbolIndex;
+
           streak = 1;
-          currentSymbolIndex = symbolIndex;
-          currentSymbol = symbolAtIndex;
         }
       }
       if (winner) {
-        payout.symbolCoordinates = currentSymbolCoordinates;
         payout.line = this.lines[lineIndex];
         this.payouts.push(payout);
       }
-    }
-    if (this.payouts.length > 0) {
-      console.log("Winners: ");
-      this.payouts.forEach((payout) => {
-        console.log(JSON.stringify(payout));
-      });
-    } else {
-      console.log("No winners, GL next spin!");
     }
   }
 }

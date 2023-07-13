@@ -26,8 +26,8 @@ export default class Reel {
     return this._symbolsInPlay;
   }
 
-  /* Randomize the starting index for a reel,
-     depending on the length of the reel array */
+  // Randomize the starting index for a reel,
+  // depending on the length of the reel array
   private randomizeStartingIndex(): void {
     const randomIndex = () => {
       const index = Math.floor(Math.random() * this.reel.length);

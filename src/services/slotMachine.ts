@@ -16,7 +16,7 @@ export default class SlotMachine {
   spin() {
     const rawResult: RawResultType[][] = [];
 
-    // For each reel get the symbols in play and return
+    // For each reel get the symbols in play and push it to the rawResult Array
     for (let i = 0; i < this.slotMachine.reels.length; i++) {
       const currentReel = new Reel(this.slotMachine.reels[i]);
       rawResult.push(currentReel.symbolsInPlay);
@@ -36,13 +36,14 @@ export default class SlotMachine {
     });
     const payout = new Payout(result.formattedReelsResult);
     payout.evaluateWinners();
+    console.log("Payout this spin:", payout.payout);
   }
 
   testSpin() {
     const testArray = [
-      [5, 4, 5, 5, 3],
-      [1, 5, 2, 5, 3],
-      [3, 2, 3, 4, 4],
+      [9, 2, 9, 2, 9],
+      [1, 9, 9, 9, 9],
+      [1, 1, 1, 1, 4],
     ];
     console.log("Formatted results:");
     testArray.forEach((row) => {
@@ -50,13 +51,6 @@ export default class SlotMachine {
     });
     const payout = new Payout(testArray);
     payout.evaluateWinners();
+    console.log("Payout this spin:", payout.payout);
   }
 }
-
-// lines: [
-//   [0, 0, 0, 0, 0],
-//   [1, 1, 1, 1, 1],
-//   [2, 2, 2, 2, 2],
-//   [0, 1, 0, 1, 0],
-//   [1, 2, 1, 2, 1],
-// ],
