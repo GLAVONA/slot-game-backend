@@ -19,3 +19,5 @@ npm i ts-node -g
 ```
 npx ts-node .\src\index.ts
 ```
+
+4. Have fun!
