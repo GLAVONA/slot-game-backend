@@ -2,7 +2,7 @@ import { PayoutType } from "@/types/SlotMachineTypes";
 import SlotMachineConfig from "../config";
 
 export default class Payout {
-  private _payout = 0;
+  payout = 0;
   reelResult;
   lines = SlotMachineConfig.lines;
   symbols = SlotMachineConfig.symbols;
@@ -13,21 +13,14 @@ export default class Payout {
   }
 
   private calculatePayout(payouts: PayoutType[]): void {
-    if (this.payouts.length > 0) {
+    if (payouts.length > 0) {
       console.log("Winners: ");
       this.payouts.forEach((payout) => {
-        this._payout += payout.winAmount;
+        this.payout += payout.winAmount;
         console.log(JSON.stringify(payout));
         console.log("-----");
       });
-    } else {
-      console.log("No winners, GL next spin!");
     }
-  }
-
-  get payout(): number {
-    this.calculatePayout(this.payouts);
-    return this._payout;
   }
 
   // Evaluate winners
@@ -89,5 +82,6 @@ export default class Payout {
         this.payouts.push(payout);
       }
     }
+    this.calculatePayout(this.payouts);
   }
 }

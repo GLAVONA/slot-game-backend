@@ -13,7 +13,7 @@ export default class SlotMachine {
     this.slotMachine = slotMachineConfig;
   }
 
-  spin() {
+  spin(): void {
     const rawResult: RawResultType[][] = [];
 
     // For each reel get the symbols in play and push it to the rawResult Array
@@ -34,9 +34,14 @@ export default class SlotMachine {
     formattedResult.forEach((row) => {
       console.log(row);
     });
+
     const payout = new Payout(result.formattedReelsResult);
     payout.evaluateWinners();
-    console.log("Payout this spin:", payout.payout);
+    if (payout.payout > 0) {
+      console.log("Payout this spin:", payout.payout);
+    } else {
+      console.log("No winners, GL next spin!");
+    }
   }
 
   testSpin() {
