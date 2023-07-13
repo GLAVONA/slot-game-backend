@@ -43,7 +43,7 @@ export default class SlotMachine {
 
       console.log("Spin results:");
       if (spinPayout > 0) {
-        console.log(spinPayout);
+        console.log(`You won ${spinPayout}!`);
         totalWin += spinPayout;
       } else {
         console.log("No winners this spin, GL on the next one!");
