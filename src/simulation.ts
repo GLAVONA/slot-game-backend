@@ -3,6 +3,7 @@ import SlotMachine from "./services/slotMachine";
 
 export const slotMachine = new SlotMachine(SlotMachineConfig);
 
+// Simulate a large number of spins and get the execution time
 console.time("Time to complete spins");
 slotMachine.spin(1000);
 console.log("*********************");
