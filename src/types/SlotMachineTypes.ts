@@ -11,12 +11,15 @@ export interface RawResultType {
   symbol: number;
 }
 
-export interface WinningStreaksType {
-  type: "row" | "zigzag";
+export interface PayoutType {
   symbol: number;
   streak: number;
-  winning: number;
-  rowIndex: number;
-  startingAtIndex: number;
-  endingAtIndex: number;
+  winAmount: number;
+  line: number[];
+  symbolCoordinates: SymbolCoordinates[];
+}
+
+export interface SymbolCoordinates {
+  row: number;
+  index: number;
 }

@@ -35,21 +35,21 @@ export default class SlotMachine {
       console.log(row);
     });
     const payout = new Payout(result.formattedReelsResult);
-    payout.checkWinners();
+    payout.evaluateWinners();
   }
 
   testSpin() {
     const testArray = [
-      [5, 2, 7, 4, 1],
-      [3, 7, 6, 1, 6],
-      [3, 3, 3, 6, 4],
+      [5, 4, 5, 5, 3],
+      [1, 5, 2, 5, 3],
+      [3, 2, 3, 4, 4],
     ];
     console.log("Formatted results:");
     testArray.forEach((row) => {
       console.log(row);
     });
     const payout = new Payout(testArray);
-    payout.checkWinners();
+    payout.evaluateWinners();
   }
 }
 

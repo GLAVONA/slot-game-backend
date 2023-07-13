@@ -1,4 +1,4 @@
-import { WinningStreaksType } from "@/types/SlotMachineTypes";
+import { PayoutType } from "@/types/SlotMachineTypes";
 import SlotMachineConfig from "../config";
 
 export default class Payout {
@@ -6,106 +6,71 @@ export default class Payout {
   reelResult;
   lines = SlotMachineConfig.lines;
   symbols = SlotMachineConfig.symbols;
-  winningStreaks: WinningStreaksType[] = [];
+  payouts: PayoutType[] = [];
 
   constructor(reelResult: number[][]) {
     this.reelResult = reelResult;
   }
 
-  // Check if there are any winners on one row
-  checkRowWinners(): void {
-    for (let i = 0; i < this.reelResult.length; i++) {
-      let streakSymbol = this.reelResult[i][0];
-      let winner = false;
+  // Evaluate winners
+  evaluateWinners(): void {
+    // Loop through lines
+    for (let lineIndex = 0; lineIndex < this.lines.length; lineIndex++) {
+      let currentSymbol = undefined;
+      let currentSymbolIndex = 0;
+      const currentLine = this.lines[lineIndex];
       let streak = 1;
-      let rowWinner: WinningStreaksType = {
-        type: "row",
+      let payout: PayoutType = {
         streak: 0,
         symbol: 0,
-        winning: 0,
-        rowIndex: 0,
-        startingAtIndex: 0,
-        endingAtIndex: 0,
+        winAmount: 0,
+        line: [],
+        symbolCoordinates: [],
       };
-      for (let y = 1; y < this.reelResult[i].length; y++) {
-        const currentSymbol = this.reelResult[i][y];
-        if (streakSymbol === currentSymbol) {
+      const currentSymbolCoordinates = [];
+      let winner = false;
+      for (
+        let symbolIndex = 0;
+        symbolIndex < currentLine.length;
+        symbolIndex++
+      ) {
+        let symbolAtIndex =
+          this.reelResult[currentLine[symbolIndex]][symbolIndex];
+
+        currentSymbolCoordinates.push({
+          row: currentLine[symbolIndex],
+          index: symbolIndex,
+        });
+
+        if (currentSymbol === symbolAtIndex) {
           streak++;
+
           if (streak > 2) {
-            rowWinner.streak = streak;
-            rowWinner.symbol = currentSymbol;
-            rowWinner.winning = this.symbols[streakSymbol][streak - 1];
-            rowWinner.rowIndex = i;
-            rowWinner.endingAtIndex = y;
+            payout.streak = streak;
+            payout.symbol = currentSymbol;
+            payout.winAmount = this.symbols[currentSymbol][streak - 1];
 
             winner = true;
           }
         } else {
-          if (streak <= 2) {
-            rowWinner.startingAtIndex = y;
-          }
-          streakSymbol = currentSymbol;
           streak = 1;
+          currentSymbolIndex = symbolIndex;
+          currentSymbol = symbolAtIndex;
         }
       }
       if (winner) {
-        this.winningStreaks.push(rowWinner);
+        payout.symbolCoordinates = currentSymbolCoordinates;
+        payout.line = this.lines[lineIndex];
+        this.payouts.push(payout);
       }
     }
-  }
-
-  checkZigzagWinners(): void {
-    for (let i = 0; i < this.reelResult.length - 1; i++) {
-      let streakSymbol = this.reelResult[i][0];
-      let winner = false;
-      let streak = 1;
-      let currentRow = i;
-      let rowWinner: WinningStreaksType = {
-        type: "zigzag",
-        streak: 0,
-        symbol: 0,
-        winning: 0,
-        rowIndex: 0,
-        startingAtIndex: 0,
-        endingAtIndex: 0,
-      };
-
-      for (let y = 0; y < this.reelResult[i].length - 1; y++) {
-        if (currentRow === i) {
-          currentRow = i + 1;
-        } else {
-          currentRow = i;
-        }
-        const nextSymbol = this.reelResult[currentRow][y + 1];
-        if (streakSymbol === nextSymbol) {
-          streak++;
-          if (streak > 2) {
-            rowWinner.streak = streak;
-            rowWinner.symbol = nextSymbol;
-            rowWinner.winning = this.symbols[streakSymbol][streak - 1];
-            rowWinner.endingAtIndex = y + 1;
-
-            winner = true;
-          }
-        } else {
-          if (streak <= 2) {
-            rowWinner.startingAtIndex = y + 1;
-          }
-          rowWinner.rowIndex = currentRow;
-
-          streak = 1;
-          streakSymbol = nextSymbol;
-        }
-      }
-      if (winner) {
-        this.winningStreaks.push(rowWinner);
-      }
+    if (this.payouts.length > 0) {
+      console.log("Winners: ");
+      this.payouts.forEach((payout) => {
+        console.log(JSON.stringify(payout));
+      });
+    } else {
+      console.log("No winners, GL next spin!");
     }
-    console.log(this.winningStreaks);
-  }
-
-  checkWinners() {
-    this.checkRowWinners();
-    this.checkZigzagWinners();
   }
 }
