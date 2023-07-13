@@ -8,8 +8,8 @@ export default class Payout {
   symbols = SlotMachineConfig.symbols;
   payouts: PayoutType[] = [];
 
-  constructor(reelResult: number[][]) {
-    this.reelResult = reelResult;
+  constructor(formattedReelsResult: number[][]) {
+    this.reelResult = formattedReelsResult;
   }
 
   private calculatePayout(payouts: PayoutType[]): void {
