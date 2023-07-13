@@ -2,7 +2,6 @@ import {
   RawResultType,
   SlotMachineConfigType,
 } from "../types/SlotMachineTypes";
-// import Payout from "./payout";
 import Reel from "./reel";
 import { calculateSpinPayout, formatReelsResult } from "../lib/utils";
 import { evaluateWinners } from "./evaluateWinners";
@@ -14,50 +13,43 @@ export default class SlotMachine {
     this.slotMachine = slotMachineConfig;
   }
 
-  spin(): void {
-    const rawResult: RawResultType[][] = [];
+  spin(numberOfSpins: number): void {
+    let totalWin = 0;
+    for (let spin = 1; spin <= numberOfSpins; spin++) {
+      console.log("Spin number:", spin);
 
-    // For each reel get the symbols in play and push it to the rawResult Array
-    for (let i = 0; i < this.slotMachine.reels.length; i++) {
-      const currentReel = new Reel(this.slotMachine.reels[i]);
-      rawResult.push(currentReel.symbolsInPlay);
+      const rawResult: RawResultType[][] = [];
+
+      // For each reel get the symbols in play and push it to the rawResult Array
+      for (let i = 0; i < this.slotMachine.reels.length; i++) {
+        const currentReel = new Reel(this.slotMachine.reels[i]);
+        rawResult.push(currentReel.symbolsInPlay);
+      }
+
+      console.log("Reel position and symbols:");
+      for (let i = 0; i < rawResult.length; i++) {
+        const reelResult: RawResultType[] = rawResult[i];
+        console.log(reelResult);
+      }
+
+      console.log("Formatted results:");
+      const formattedResult = formatReelsResult(rawResult);
+      formattedResult.forEach((row) => {
+        console.log(row);
+      });
+      const payouts = evaluateWinners(formattedResult);
+      const spinPayout = calculateSpinPayout(payouts);
+
+      if (spinPayout > 0) {
+        console.log("Payout this spin:", spinPayout);
+        totalWin += spinPayout;
+      } else {
+        console.log("No winners this spin, GL on the next one!");
+      }
     }
-
-    console.log("Reel position and symbols:");
-    for (let i = 0; i < rawResult.length; i++) {
-      const reelResult: RawResultType[] = rawResult[i];
-      console.log(reelResult);
-    }
-
-    console.log("Formatted results:");
-    const formattedResult = formatReelsResult(rawResult);
-    formattedResult.forEach((row) => {
-      console.log(row);
-    });
-    const payouts = evaluateWinners(formattedResult);
-    const totalPayout = calculateSpinPayout(payouts);
-
-    if (totalPayout > 0) {
-      console.log("Payout this spin:", totalPayout);
-    } else {
-      console.log("No winners, GL next spin!");
-    }
-  }
-
-  testSpin() {
-    const testArray = [
-      [9, 2, 9, 2, 9],
-      [1, 9, 9, 9, 9],
-      [1, 1, 1, 1, 4],
-    ];
-
-    console.log("Formatted results:");
-
-    testArray.forEach((row) => {
-      console.log(row);
-    });
-    const payouts = evaluateWinners(testArray);
-    const totalPayout = calculateSpinPayout(payouts);
-    console.log("Payout this spin:", totalPayout);
+    console.log("---------------------");
+    console.log("END OF SPINS");
+    console.log("Total win from all spins:", totalWin);
+    console.log("---------------------");
   }
 }

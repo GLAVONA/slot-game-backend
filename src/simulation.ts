@@ -3,5 +3,6 @@ import SlotMachine from "./services/slotMachine";
 
 export const slotMachine = new SlotMachine(SlotMachineConfig);
 
-// Please provide your number of spins to the spin method
-slotMachine.spin(3);
+console.time("Time to complete spins");
+slotMachine.spin(1000);
+console.timeEnd("Time to complete spins");
