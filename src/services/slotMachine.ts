@@ -16,6 +16,7 @@ export default class SlotMachine {
   spin(numberOfSpins: number): void {
     let totalWin = 0;
     for (let spin = 1; spin <= numberOfSpins; spin++) {
+      console.log("--- NEW SPIN ---");
       console.log("Spin number:", spin);
 
       const rawResult: RawResultType[][] = [];
@@ -32,7 +33,7 @@ export default class SlotMachine {
         console.log(reelResult);
       }
 
-      console.log("Formatted results:");
+      console.log("Spin formatted:");
       const formattedResult = formatReelsResult(rawResult);
       formattedResult.forEach((row) => {
         console.log(row);
@@ -40,8 +41,9 @@ export default class SlotMachine {
       const payouts = evaluateWinners(formattedResult);
       const spinPayout = calculateSpinPayout(payouts);
 
+      console.log("Spin results:");
       if (spinPayout > 0) {
-        console.log("Payout this spin:", spinPayout);
+        console.log(spinPayout);
         totalWin += spinPayout;
       } else {
         console.log("No winners this spin, GL on the next one!");
