@@ -1,4 +1,4 @@
-import { PayoutType, RawResultType } from "@/types/SlotMachineTypes";
+import { PayoutType, RawResultType } from "../types/SlotMachineTypes";
 
 export function formatReelsResult(rawResult: RawResultType[][]): number[][] {
   const formattedResult = rawResult[0].map((_, colIndex) =>

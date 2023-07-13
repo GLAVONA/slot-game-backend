@@ -1,4 +1,4 @@
-import { SlotMachineConfigType } from "@/types/SlotMachineTypes";
+import { SlotMachineConfigType } from "../types/SlotMachineTypes";
 
 const SlotMachineConfig: SlotMachineConfigType = {
   reelsCount: 5,

@@ -1,4 +1,4 @@
-import { RawResultType } from "@/types/SlotMachineTypes";
+import { RawResultType } from "../types/SlotMachineTypes";
 import SlotMachineConfig from "../config";
 
 export default class Reel {
