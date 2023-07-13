@@ -49,6 +49,7 @@ export default class SlotMachine {
     }
     console.log("---------------------");
     console.log("END OF SPINS");
+    console.log("Total number of bets:", numberOfSpins);
     console.log("Total win from all spins:", totalWin);
     console.log("---------------------");
   }
